@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-interface ActivitiesProps {
-  apiBase: string;
-}
-
 const normalizeApiResponse = (payload: any): any[] => {
   if (Array.isArray(payload)) return payload;
   if (payload?.data) return payload.data;
@@ -12,7 +8,7 @@ const normalizeApiResponse = (payload: any): any[] => {
   return Array.isArray(arrayPayload) ? arrayPayload : [];
 };
 
-export default function Activities({ apiBase }: ActivitiesProps) {
+export default function Activities() {
   const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +16,7 @@ export default function Activities({ apiBase }: ActivitiesProps) {
   useEffect(() => {
     async function loadActivities() {
       try {
-        const response = await fetch(`${apiBase}/activities`);
+        const response = await fetch('/api/activities');
         const payload = await response.json();
         setActivities(normalizeApiResponse(payload));
       } catch (err) {

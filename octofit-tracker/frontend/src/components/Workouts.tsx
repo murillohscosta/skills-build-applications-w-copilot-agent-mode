@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-interface WorkoutsProps {
-  apiBase: string;
-}
-
 const normalizeApiResponse = (payload: any): any[] => {
   if (Array.isArray(payload)) return payload;
   if (payload?.data) return payload.data;
@@ -12,7 +8,7 @@ const normalizeApiResponse = (payload: any): any[] => {
   return Array.isArray(arrayPayload) ? arrayPayload : [];
 };
 
-export default function Workouts({ apiBase }: WorkoutsProps) {
+export default function Workouts() {
   const [workouts, setWorkouts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +16,7 @@ export default function Workouts({ apiBase }: WorkoutsProps) {
   useEffect(() => {
     async function loadWorkouts() {
       try {
-        const response = await fetch(`${apiBase}/workouts`);
+        const response = await fetch('/api/workouts');
         const payload = await response.json();
         setWorkouts(normalizeApiResponse(payload));
       } catch (err) {

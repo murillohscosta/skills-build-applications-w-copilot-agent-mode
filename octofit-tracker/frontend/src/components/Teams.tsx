@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-interface TeamsProps {
-  apiBase: string;
-}
-
 const normalizeApiResponse = (payload: any): any[] => {
   if (Array.isArray(payload)) return payload;
   if (payload?.data) return payload.data;
@@ -12,7 +8,7 @@ const normalizeApiResponse = (payload: any): any[] => {
   return Array.isArray(arrayPayload) ? arrayPayload : [];
 };
 
-export default function Teams({ apiBase }: TeamsProps) {
+export default function Teams() {
   const [teams, setTeams] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +16,7 @@ export default function Teams({ apiBase }: TeamsProps) {
   useEffect(() => {
     async function loadTeams() {
       try {
-        const response = await fetch(`${apiBase}/teams`);
+        const response = await fetch('/api/teams');
         const payload = await response.json();
         setTeams(normalizeApiResponse(payload));
       } catch (err) {
