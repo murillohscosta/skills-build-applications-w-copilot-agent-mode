@@ -6,7 +6,13 @@ import Activities from './components/Activities';
 import Leaderboard from './components/Leaderboard';
 import Workouts from './components/Workouts';
 
-const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+const rawCodespaceName = import.meta.env.VITE_CODESPACE_NAME;
+const codespaceName =
+  typeof rawCodespaceName === 'string' &&
+  rawCodespaceName.trim() &&
+  rawCodespaceName !== 'undefined'
+    ? rawCodespaceName.trim()
+    : '';
 const apiBase = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev/api`
   : 'http://localhost:8000/api';
