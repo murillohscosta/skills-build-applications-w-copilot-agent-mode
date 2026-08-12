@@ -1,34 +1,71 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { NavLink, Routes, Route } from 'react-router-dom';
+import Users from './components/Users';
+import Teams from './components/Teams';
+import Activities from './components/Activities';
+import Leaderboard from './components/Leaderboard';
+import Workouts from './components/Workouts';
 
-function Home() {
-  return (
-    <div className="container py-5">
-      <h1>OctoFit Tracker</h1>
-      <p>Welcome to the OctoFit Tracker modern frontend.</p>
-      <Link to="/dashboard" className="btn btn-primary">
-        Go to dashboard
-      </Link>
-    </div>
-  );
-}
-
-function Dashboard() {
-  return (
-    <div className="container py-5">
-      <h2>Dashboard</h2>
-      <p>Track workouts, teams, and leaderboards here.</p>
-    </div>
-  );
-}
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+const apiBase = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api`
+  : 'http://localhost:8000/api';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <div className="container py-4">
+      <header className="mb-4">
+        <h1>OctoFit Tracker</h1>
+        <p className="text-muted">
+          Uses Vite env variable <code>VITE_CODESPACE_NAME</code> for Codespaces API
+          routing. Set it in <code>.env.local</code> when running in Codespaces.
+        </p>
+      </header>
+
+      {!codespaceName && (
+        <div className="alert alert-warning">
+          <strong>Local fallback:</strong> VITE_CODESPACE_NAME is not set, so the
+          app is using <code>{apiBase}</code>.
+        </div>
+      )}
+
+      <nav className="nav nav-pills mb-4">
+        <NavLink to="/" className="nav-link" end>
+          Home
+        </NavLink>
+        <NavLink to="/users" className="nav-link">
+          Users
+        </NavLink>
+        <NavLink to="/teams" className="nav-link">
+          Teams
+        </NavLink>
+        <NavLink to="/activities" className="nav-link">
+          Activities
+        </NavLink>
+        <NavLink to="/leaderboard" className="nav-link">
+          Leaderboard
+        </NavLink>
+        <NavLink to="/workouts" className="nav-link">
+          Workouts
+        </NavLink>
+      </nav>
+
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/"
+          element={
+            <div>
+              <h2>Welcome to OctoFit Tracker</h2>
+              <p>Use the navigation to view users, teams, activities, leaderboard, and workouts.</p>
+            </div>
+          }
+        />
+        <Route path="/users" element={<Users apiBase={apiBase} />} />
+        <Route path="/teams" element={<Teams apiBase={apiBase} />} />
+        <Route path="/activities" element={<Activities apiBase={apiBase} />} />
+        <Route path="/leaderboard" element={<Leaderboard apiBase={apiBase} />} />
+        <Route path="/workouts" element={<Workouts apiBase={apiBase} />} />
       </Routes>
-    </BrowserRouter>
+    </div>
   );
 }
