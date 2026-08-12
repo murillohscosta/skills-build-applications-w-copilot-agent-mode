@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+interface LeaderboardProps {
+  apiBase: string;
+}
+
 const normalizeApiResponse = (payload: any): any[] => {
   if (Array.isArray(payload)) return payload;
   if (payload?.data) return payload.data;
@@ -8,7 +12,7 @@ const normalizeApiResponse = (payload: any): any[] => {
   return Array.isArray(arrayPayload) ? arrayPayload : [];
 };
 
-export default function Leaderboard() {
+export default function Leaderboard({ apiBase }: LeaderboardProps) {
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +20,7 @@ export default function Leaderboard() {
   useEffect(() => {
     async function loadLeaderboard() {
       try {
-        const response = await fetch('/api/leaderboard');
+        const response = await fetch(`${apiBase}/leaderboard`);
         const payload = await response.json();
         setLeaderboard(normalizeApiResponse(payload));
       } catch (err) {

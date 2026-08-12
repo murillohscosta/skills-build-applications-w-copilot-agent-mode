@@ -6,16 +6,34 @@ import Activities from './components/Activities';
 import Leaderboard from './components/Leaderboard';
 import Workouts from './components/Workouts';
 
+const rawCodespaceName = import.meta.env.VITE_CODESPACE_NAME;
+const codespaceName =
+  typeof rawCodespaceName === 'string' &&
+  rawCodespaceName.trim() &&
+  rawCodespaceName !== 'undefined'
+    ? rawCodespaceName.trim()
+    : '';
+const apiBase = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api`
+  : 'http://localhost:8000/api';
+
 export default function App() {
   return (
     <div className="container py-4">
       <header className="mb-4">
         <h1>OctoFit Tracker</h1>
         <p className="text-muted">
-          Fetches the backend through direct <code>/api/*</code> routes. Vite proxies
-          these requests to the backend on port 8000 during development.
+          Uses the Vite environment variable <code>VITE_CODESPACE_NAME</code> to build
+          the backend API root. In Codespaces define this variable in <code>.env.local</code>.
         </p>
       </header>
+
+      {!codespaceName && (
+        <div className="alert alert-warning">
+          <strong>Local fallback:</strong> <code>VITE_CODESPACE_NAME</code> is not set,
+          so the app is using <code>{apiBase}</code>.
+        </div>
+      )}
 
       <nav className="nav nav-pills mb-4">
         <NavLink to="/" className="nav-link" end>
@@ -48,11 +66,11 @@ export default function App() {
             </div>
           }
         />
-        <Route path="/users" element={<Users />} />
-        <Route path="/teams" element={<Teams />} />
-        <Route path="/activities" element={<Activities />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
-        <Route path="/workouts" element={<Workouts />} />
+        <Route path="/users" element={<Users apiBase={apiBase} />} />
+        <Route path="/teams" element={<Teams apiBase={apiBase} />} />
+        <Route path="/activities" element={<Activities apiBase={apiBase} />} />
+        <Route path="/leaderboard" element={<Leaderboard apiBase={apiBase} />} />
+        <Route path="/workouts" element={<Workouts apiBase={apiBase} />} />
       </Routes>
     </div>
   );

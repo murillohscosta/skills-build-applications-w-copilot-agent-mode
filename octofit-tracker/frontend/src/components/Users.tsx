@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+interface UsersProps {
+  apiBase: string;
+}
+
 const normalizeApiResponse = (payload: any): any[] => {
   if (Array.isArray(payload)) return payload;
   if (payload?.data) return payload.data;
@@ -8,7 +12,7 @@ const normalizeApiResponse = (payload: any): any[] => {
   return Array.isArray(arrayPayload) ? arrayPayload : [];
 };
 
-export default function Users() {
+export default function Users({ apiBase }: UsersProps) {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +20,7 @@ export default function Users() {
   useEffect(() => {
     async function loadUsers() {
       try {
-        const response = await fetch('/api/users');
+        const response = await fetch(`${apiBase}/users`);
         const payload = await response.json();
         setUsers(normalizeApiResponse(payload));
       } catch (err) {
