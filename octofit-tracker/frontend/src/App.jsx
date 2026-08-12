@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink, Routes, Route } from 'react-router-dom';
-import Users from './components/Users';
-import Teams from './components/Teams';
-import Activities from './components/Activities';
-import Leaderboard from './components/Leaderboard';
-import Workouts from './components/Workouts';
+import Users from './components/Users.jsx';
+import Teams from './components/Teams.jsx';
+import Activities from './components/Activities.jsx';
+import Leaderboard from './components/Leaderboard.jsx';
+import Workouts from './components/Workouts.jsx';
 
 const rawCodespaceName = import.meta.env.VITE_CODESPACE_NAME;
 const codespaceName =

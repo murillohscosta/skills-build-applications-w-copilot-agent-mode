@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+// Expected Codespaces API endpoint:
+// https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts
 const normalizeApiResponse = (payload) => {
   if (Array.isArray(payload)) return payload;
   if (payload?.data) return payload.data;
